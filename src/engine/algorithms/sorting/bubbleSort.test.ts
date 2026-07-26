@@ -12,7 +12,8 @@ describe("bubbleSort", () => {
 
   it("nunca muta o array original recebido", () => {
     const original = [5, 2, 4, 1];
-    [...bubbleSort(original)]; // consome todos os frames
+    const consumedFrames = [...bubbleSort(original)]; // consome todos os frames
+    expect(consumedFrames.length).toBeGreaterThan(0);
 
     expect(original).toEqual([5, 2, 4, 1]); // deve continuar intacto
   });
