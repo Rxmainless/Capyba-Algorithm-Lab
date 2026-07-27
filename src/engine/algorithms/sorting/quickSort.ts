@@ -12,7 +12,8 @@ function makeFrame(
   action: Frame["action"],
   narrative: string,
   callStack: string[],
-  metrics: Metrics
+  metrics: Metrics,
+  codeLine: number
 ): Frame {
   return {
     array: [...array],
@@ -21,6 +22,7 @@ function makeFrame(
     narrative,
     callStack: [...callStack],
     metrics: { ...metrics, estimatedComplexity: "O(n log n) avg / O(n²) worst" },
+    codeLine,
   };
 }
 
@@ -39,12 +41,9 @@ function* partition(
     metrics.memoryAccesses += 2;
 
     yield makeFrame(
-      array,
-      [j, high],
-      "compare",
+      array, [j, high], "compare",
       `Comparando o elemento na posição ${j} com o pivô (posição ${high}, valor ${pivot}).`,
-      stack,
-      metrics
+      stack, metrics, 9
     );
 
     if (array[j] < pivot) {
@@ -55,12 +54,9 @@ function* partition(
         metrics.memoryAccesses += 2;
 
         yield makeFrame(
-          array,
-          [i, j],
-          "swap",
+          array, [i, j], "swap",
           `Elemento menor que o pivô. Movendo-o para a região dos menores (posição ${i}).`,
-          stack,
-          metrics
+          stack, metrics, 10
         );
       }
     }
@@ -71,12 +67,9 @@ function* partition(
   metrics.memoryAccesses += 2;
 
   yield makeFrame(
-    array,
-    [i + 1, high],
-    "swap",
+    array, [i + 1, high], "swap",
     `Posicionando o pivô no lugar definitivo (posição ${i + 1}). Esquerda = menores, direita = maiores.`,
-    stack,
-    metrics
+    stack, metrics, 11
   );
 
   return i + 1;
@@ -93,12 +86,9 @@ function* quickSortHelper(
 
   stack.push(`quickSort(${low}, ${high})`);
   yield makeFrame(
-    array,
-    [low, high],
-    "call",
+    array, [low, high], "call",
     `Nova chamada recursiva para o intervalo [${low}, ${high}].`,
-    stack,
-    metrics
+    stack, metrics, 1
   );
 
   const pivotIndex = yield* partition(array, low, high, stack, metrics);
@@ -107,12 +97,9 @@ function* quickSortHelper(
   yield* quickSortHelper(array, pivotIndex + 1, high, stack, metrics);
 
   yield makeFrame(
-    array,
-    [],
-    "return",
+    array, [], "return",
     `Retornando de quickSort(${low}, ${high}) — intervalo já ordenado.`,
-    stack,
-    metrics
+    stack, metrics, 5
   );
   stack.pop();
 }
@@ -124,5 +111,5 @@ export function* quickSort(input: number[]): Generator<Frame> {
 
   yield* quickSortHelper(array, 0, array.length - 1, stack, metrics);
 
-  yield makeFrame(array, [], "idle", "O array está completamente ordenado.", [], metrics);
+  yield makeFrame(array, [], "idle", "O array está completamente ordenado.", [], metrics, 2);
 }

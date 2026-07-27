@@ -12,7 +12,8 @@ function frame(
   action: Frame["action"],
   narrative: string,
   stack: string[],
-  metrics: Metrics
+  metrics: Metrics,
+  codeLine: number
 ): Frame {
   return {
     array: [...array],
@@ -21,6 +22,7 @@ function frame(
     narrative,
     callStack: [...stack],
     metrics: { ...metrics, estimatedComplexity: "O(n log n)" },
+    codeLine,
   };
 }
 
@@ -41,12 +43,9 @@ function* merge(
     metrics.memoryAccesses += 2;
 
     yield frame(
-      array,
-      [low + i, mid + 1 + j],
-      "compare",
+      array, [low + i, mid + 1 + j], "compare",
       `Comparando as sub-listas ordenadas: elemento da esquerda (${left[i]}) com o da direita (${right[j]}).`,
-      stack,
-      metrics
+      stack, metrics, 9
     );
 
     if (left[i] <= right[j]) {
@@ -59,28 +58,21 @@ function* merge(
     metrics.swaps++;
     metrics.memoryAccesses++;
 
-    yield frame(
-      array,
-      [k],
-      "swap",
-      `Posicionando o menor dos dois no array combinado, na posição ${k}.`,
-      stack,
-      metrics
-    );
+    yield frame(array, [k], "swap", `Posicionando o menor dos dois no array combinado, na posição ${k}.`, stack, metrics, 9);
     k++;
   }
 
   while (i < left.length) {
     array[k] = left[i];
     metrics.memoryAccesses++;
-    yield frame(array, [k], "swap", `Copiando o restante da sub-lista esquerda.`, stack, metrics);
+    yield frame(array, [k], "swap", `Copiando o restante da sub-lista esquerda.`, stack, metrics, 10);
     i++; k++;
   }
 
   while (j < right.length) {
     array[k] = right[j];
     metrics.memoryAccesses++;
-    yield frame(array, [k], "swap", `Copiando o restante da sub-lista direita.`, stack, metrics);
+    yield frame(array, [k], "swap", `Copiando o restante da sub-lista direita.`, stack, metrics, 10);
     j++; k++;
   }
 }
@@ -95,14 +87,14 @@ function* mergeSortHelper(
   if (low >= high) return;
 
   stack.push(`mergeSort(${low}, ${high})`);
-  yield frame(array, [low, high], "call", `Dividindo o intervalo [${low}, ${high}] ao meio.`, stack, metrics);
+  yield frame(array, [low, high], "call", `Dividindo o intervalo [${low}, ${high}] ao meio.`, stack, metrics, 1);
 
   const mid = Math.floor((low + high) / 2);
   yield* mergeSortHelper(array, low, mid, stack, metrics);
   yield* mergeSortHelper(array, mid + 1, high, stack, metrics);
   yield* merge(array, low, mid, high, stack, metrics);
 
-  yield frame(array, [], "return", `Sub-lista [${low}, ${high}] combinada e ordenada.`, stack, metrics);
+  yield frame(array, [], "return", `Sub-lista [${low}, ${high}] combinada e ordenada.`, stack, metrics, 6);
   stack.pop();
 }
 
@@ -113,5 +105,5 @@ export function* mergeSort(input: number[]): Generator<Frame> {
 
   yield* mergeSortHelper(array, 0, array.length - 1, stack, metrics);
 
-  yield frame(array, [], "idle", "O array está completamente ordenado.", [], metrics);
+  yield frame(array, [], "idle", "O array está completamente ordenado.", [], metrics, 2);
 }

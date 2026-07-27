@@ -12,7 +12,8 @@ function frame(
   action: Frame["action"],
   narrative: string,
   stack: string[],
-  metrics: Metrics
+  metrics: Metrics,
+  codeLine: number
 ): Frame {
   return {
     array: [...array],
@@ -21,6 +22,7 @@ function frame(
     narrative,
     callStack: [...stack],
     metrics: { ...metrics, estimatedComplexity: "O(n log n)" },
+    codeLine,
   };
 }
 
@@ -37,13 +39,13 @@ function* heapify(
 
   if (left < size) {
     metrics.comparisons++;
-    yield frame(array, [largest, left], "compare", `Comparando o nó pai (posição ${largest}) com o filho esquerdo (posição ${left}) do heap.`, stack, metrics);
+    yield frame(array, [largest, left], "compare", `Comparando o nó pai (posição ${largest}) com o filho esquerdo (posição ${left}) do heap.`, stack, metrics, 8);
     if (array[left] > array[largest]) largest = left;
   }
 
   if (right < size) {
     metrics.comparisons++;
-    yield frame(array, [largest, right], "compare", `Comparando o maior encontrado até agora com o filho direito (posição ${right}) do heap.`, stack, metrics);
+    yield frame(array, [largest, right], "compare", `Comparando o maior encontrado até agora com o filho direito (posição ${right}) do heap.`, stack, metrics, 9);
     if (array[right] > array[largest]) largest = right;
   }
 
@@ -52,7 +54,7 @@ function* heapify(
     metrics.swaps++;
     metrics.memoryAccesses += 2;
 
-    yield frame(array, [root, largest], "swap", `Violação da propriedade de heap. Trocando o pai (posição ${root}) com o maior filho (posição ${largest}).`, stack, metrics);
+    yield frame(array, [root, largest], "swap", `Violação da propriedade de heap. Trocando o pai (posição ${root}) com o maior filho (posição ${largest}).`, stack, metrics, 10);
 
     stack.push(`heapify(root=${largest})`);
     yield* heapify(array, size, largest, stack, metrics);
@@ -68,7 +70,7 @@ export function* heapSort(input: number[]): Generator<Frame> {
 
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
     stack.push(`buildHeap(root=${i})`);
-    yield frame(array, [i], "call", `Construindo o heap máximo: organizando o nó na posição ${i}.`, stack, metrics);
+    yield frame(array, [i], "call", `Construindo o heap máximo: organizando o nó na posição ${i}.`, stack, metrics, 2);
     yield* heapify(array, n, i, stack, metrics);
     stack.pop();
   }
@@ -78,12 +80,12 @@ export function* heapSort(input: number[]): Generator<Frame> {
     metrics.swaps++;
     metrics.memoryAccesses += 2;
 
-    yield frame(array, [0, i], "swap", `Movendo o maior elemento (raiz do heap) para o final da região ainda não ordenada.`, stack, metrics);
+    yield frame(array, [0, i], "swap", `Movendo o maior elemento (raiz do heap) para o final da região ainda não ordenada.`, stack, metrics, 4);
 
     stack.push(`heapify(root=0)`);
     yield* heapify(array, i, 0, stack, metrics);
     stack.pop();
   }
 
-  yield frame(array, [], "idle", "O array está completamente ordenado.", [], metrics);
+  yield frame(array, [], "idle", "O array está completamente ordenado.", [], metrics, 1);
 }

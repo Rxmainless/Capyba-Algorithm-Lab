@@ -7,6 +7,7 @@ import { VisualizationPanel } from "./components/panels/VisualizationPanel";
 import { NarrativePanel } from "./components/panels/NarrativePanel";
 import { MetricsPanel } from "./components/panels/MetricsPanel";
 import { CallStackPanel } from "./components/panels/CallStackPanel";
+import { CodePanel } from "./components/panels/CodePanel";
 import { PlaybackControls } from "./components/controls/PlaybackControls";
 
 function randomArray(size = 12) {
@@ -26,8 +27,8 @@ export default function App() {
   }, [algorithmId, inputArray, loadFrames]);
 
   return (
-    <div className="min-h-screen bg-bg text-white flex flex-col p-6 gap-4">
-      <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-bg text-white flex flex-col p-4 md:p-6 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <h1 className="font-mono text-lg text-accent-amber">Capyba-Algorithm-Lab</h1>
         <AlgorithmSelector
           selectedId={algorithmId}
@@ -35,12 +36,13 @@ export default function App() {
           onNewArray={() => setInputArray(randomArray())}
         />
       </div>
-      <div className="flex-1 grid grid-cols-[1fr_320px] gap-4">
+      <div className="flex-1 grid grid-cols-1 md:grid-cols-[1fr_340px] gap-4">
         <VisualizationPanel />
         <div className="flex flex-col gap-4">
           <NarrativePanel />
           <MetricsPanel />
           <CallStackPanel />
+          <CodePanel algorithmId={algorithmId} />
         </div>
       </div>
       <PlaybackControls />
