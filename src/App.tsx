@@ -36,15 +36,15 @@ export default function App() {
           onNewArray={() => setInputArray(randomArray())}
         />
       </div>
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-[1fr_340px] gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_340px] gap-4">
         <VisualizationPanel />
         <div className="flex flex-col gap-4">
           <NarrativePanel />
           <MetricsPanel />
           <CallStackPanel />
-          <CodePanel algorithmId={algorithmId} />
         </div>
       </div>
+      <CodePanel algorithmId={algorithmId} />
       <PlaybackControls />
     </div>
   );

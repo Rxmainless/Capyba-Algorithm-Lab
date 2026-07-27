@@ -11,7 +11,7 @@ export function CodePanel({ algorithmId }: CodePanelProps) {
   const activeLine = frame?.codeLine;
 
   return (
-    <div className="bg-panel rounded-lg p-4 font-mono text-xs overflow-x-auto">
+    <div className="bg-panel rounded-lg p-4 font-mono text-xs">
       <h3 className="text-xs text-text-secondary uppercase tracking-wide mb-2">Code</h3>
       <ol className="space-y-0.5">
         {lines.map((line, index) => {
