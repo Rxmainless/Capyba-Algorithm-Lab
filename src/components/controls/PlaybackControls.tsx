@@ -9,8 +9,12 @@ const SPEED_OPTIONS = [
   { label: "4x", value: 100 },
 ] as const;
 
-export function PlaybackControls() {
-  const { isPlaying, play, pause, next, prev, reset, speed, setSpeed, currentIndex, frames, muted, toggleMute } =
+interface PlaybackControlsProps {
+  onPlay: () => void;
+}
+
+export function PlaybackControls({ onPlay }: PlaybackControlsProps) {
+  const { isPlaying, pause, next, prev, reset, speed, setSpeed, currentIndex, frames, muted, toggleMute } =
     useExecutionStore();
 
   useEffect(() => {
@@ -23,7 +27,7 @@ export function PlaybackControls() {
     <div className="flex items-center gap-3 bg-panel rounded-lg p-3 font-mono text-sm">
       <button onClick={reset} className="text-text-secondary hover:text-white">⏮</button>
       <button onClick={prev} className="text-text-secondary hover:text-white">◀</button>
-      <button onClick={isPlaying ? pause : play} className="text-accent-amber hover:text-white text-lg">
+      <button onClick={isPlaying ? pause : onPlay} className="text-accent-amber hover:text-white text-lg">
         {isPlaying ? "⏸" : "▶"}
       </button>
       <button onClick={next} className="text-text-secondary hover:text-white">▶|</button>
