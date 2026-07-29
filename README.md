@@ -100,3 +100,50 @@ npm run build
 ---
 
 ## Project Structure
+src/
+engine/ # Pure logic, zero UI dependencies
+types.ts # Frame interface
+pseudocode.ts # Pseudocode shown in the Code Panel
+audio.ts # Web Audio sound generation
+algorithms/
+registry.ts # Central list of available algorithms
+sorting/
+bubbleSort.ts
+selectionSort.ts
+insertionSort.ts
+quickSort.ts
+mergeSort.ts
+heapSort.ts
+components/
+panels/ # Visualization, Narrative, Metrics, CallStack, Code
+controls/ # AlgorithmSelector, PlaybackControls
+store/
+executionStore.ts # Zustand: playback state
+hooks/
+useFrameAudio.ts
+---
+
+## Roadmap
+
+Lumen is being built as a full Computer Science laboratory, not just a sorting visualizer. Current status:
+
+- [x] Sorting algorithms
+- [ ] Search algorithms & Data Structures
+- [ ] Graphs
+- [ ] Dynamic Programming
+- [ ] Cryptography
+- [ ] Computer Networks
+- [ ] Operating Systems
+- [ ] Concurrency & Parallelism
+- [ ] Compilers
+- [ ] Artificial Intelligence
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
+
+## Author
+
+Built by [Rxmainless](https://github.com/Rxmainless).
