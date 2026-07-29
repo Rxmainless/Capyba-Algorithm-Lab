@@ -5,12 +5,15 @@ import { insertionSort } from "./sorting/insertionSort";
 import { selectionSort } from "./sorting/selectionSort";
 import { mergeSort } from "./sorting/mergeSort";
 import { heapSort } from "./sorting/heapSort";
+import { linearSearch } from "./searching/linearSearch";
+import { binarySearch } from "./searching/binarySearch";
 
 export interface AlgorithmDefinition {
   id: string;
   name: string;
   category: string;
-  run: (input: number[]) => Generator<Frame>;
+  requiresTarget?: boolean;
+  run: (input: number[], target: number) => Generator<Frame>;
 }
 
 export const algorithms: AlgorithmDefinition[] = [
@@ -20,6 +23,8 @@ export const algorithms: AlgorithmDefinition[] = [
   { id: "quick-sort", name: "Quick Sort", category: "Sorting", run: quickSort },
   { id: "merge-sort", name: "Merge Sort", category: "Sorting", run: mergeSort },
   { id: "heap-sort", name: "Heap Sort", category: "Sorting", run: heapSort },
+  { id: "linear-search", name: "Linear Search", category: "Searching", requiresTarget: true, run: linearSearch },
+  { id: "binary-search", name: "Binary Search", category: "Searching", requiresTarget: true, run: binarySearch },
 ];
 
 export function getAlgorithmById(id: string): AlgorithmDefinition {

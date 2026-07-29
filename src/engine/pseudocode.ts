@@ -62,4 +62,25 @@ export const pseudocode: Record<string, string[]> = {
     "  if left/right > largest: update largest",
     "  if largest != root: swap and heapify(largest)",
   ],
+
+  "linear-search": [
+    "linearSearch(array, target):",
+    "  for i from 0 to n-1",
+    "    if array[i] == target",
+    "      return i",
+    "  return not found",
+  ],
+  "binary-search": [
+    "binarySearch(array, target):",
+    "  low = 0, high = n-1",
+    "  while low <= high",
+    "    mid = (low + high) / 2",
+    "    if array[mid] == target",
+    "      return mid",
+    "    else if array[mid] < target",
+    "      low = mid + 1",
+    "    else",
+    "      high = mid - 1",
+    "  return not found",
+  ],
 };
