@@ -24,7 +24,8 @@ describe.each(algorithms)("$name", ({ run }) => {
 
   it("nunca muta o array original recebido", () => {
     const original = [5, 2, 9, 1, 7];
-    [...run(original, 9)];
+    const consumed = [...run(original, 9)];
+    expect(consumed.length).toBeGreaterThan(0);
     expect(original).toEqual([5, 2, 9, 1, 7]);
   });
 
