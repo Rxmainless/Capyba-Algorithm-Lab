@@ -32,7 +32,7 @@ export function AlgorithmSelector({ selectedId, onSelect, onNewArray }: Algorith
         onClick={onNewArray}
         className="bg-panel text-accent-cyan rounded px-3 py-1.5 border border-text-secondary/30 hover:text-white"
       >
-        New Array
+        Novo Array
       </button>
     </div>
   );

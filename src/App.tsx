@@ -65,7 +65,7 @@ export default function App() {
           <h1 className="font-mono text-lg text-accent-amber">Lumen</h1>
           {currentAlgorithm.requiresTarget && (
             <span className="font-mono text-xs text-text-secondary bg-panel rounded px-2 py-1">
-              searching for <span className="text-accent-cyan">{target}</span>
+              buscando por <span className="text-accent-cyan">{target}</span>
             </span>
           )}
         </div>
@@ -82,7 +82,7 @@ export default function App() {
       <CodePanel algorithmId={algorithmId} />
       <PlaybackControls onPlay={handlePlay} />
       <footer className="text-center text-xs font-mono text-text-secondary pt-2">
-        Built by <a href="https://github.com/Rxmainless" target="_blank" rel="noopener noreferrer" className="text-accent-cyan hover:text-white">Rxmainless</a>
+        Criado por <a href="https://github.com/Rxmainless" target="_blank" rel="noopener noreferrer" className="text-accent-cyan hover:text-white">Rxmainless</a>
       </footer>
     </div>
   );

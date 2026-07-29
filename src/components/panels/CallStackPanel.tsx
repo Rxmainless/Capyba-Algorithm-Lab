@@ -6,9 +6,9 @@ export function CallStackPanel() {
 
   return (
     <div className="bg-panel rounded-lg p-4 font-mono text-sm h-40 overflow-y-auto">
-      <h3 className="text-xs text-text-secondary uppercase tracking-wide mb-2">Call Stack</h3>
+      <h3 className="text-xs text-text-secondary uppercase tracking-wide mb-2">Pilha de Chamadas</h3>
       {stack.length === 0 ? (
-        <p className="text-text-secondary">empty</p>
+        <p className="text-text-secondary">vazia</p>
       ) : (
         <ul>
           {stack.map((call, i) => (

@@ -62,7 +62,6 @@ export const pseudocode: Record<string, string[]> = {
     "  if left/right > largest: update largest",
     "  if largest != root: swap and heapify(largest)",
   ],
-
   "linear-search": [
     "linearSearch(array, target):",
     "  for i from 0 to n-1",
