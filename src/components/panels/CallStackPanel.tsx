@@ -5,7 +5,7 @@ export function CallStackPanel() {
   const stack = frame?.callStack ?? [];
 
   return (
-    <div className="bg-panel rounded-lg p-4 font-mono text-sm">
+    <div className="bg-panel rounded-lg p-4 font-mono text-sm h-40 overflow-y-auto">
       <h3 className="text-xs text-text-secondary uppercase tracking-wide mb-2">Call Stack</h3>
       {stack.length === 0 ? (
         <p className="text-text-secondary">empty</p>
