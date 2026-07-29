@@ -21,6 +21,7 @@ export function* selectionSort(input: number[]): Generator<Frame> {
         narrative: `Procurando o menor elemento restante. Comparando o menor encontrado até agora (posição ${minIndex}) com a posição ${j}.`,
         callStack: [`selectionSort(pass=${i})`],
         metrics: { comparisons, swaps, memoryAccesses, estimatedComplexity: "O(n²)" },
+        codeLine: 4,
       };
 
       if (array[j] < array[minIndex]) minIndex = j;
@@ -38,6 +39,7 @@ export function* selectionSort(input: number[]): Generator<Frame> {
         narrative: `Menor elemento encontrado na posição ${minIndex}. Movendo-o para a posição ${i}, que já está sendo finalizada.`,
         callStack: [`selectionSort(pass=${i})`],
         metrics: { comparisons, swaps, memoryAccesses, estimatedComplexity: "O(n²)" },
+        codeLine: 6,
       };
     }
   }
@@ -49,5 +51,6 @@ export function* selectionSort(input: number[]): Generator<Frame> {
     narrative: "O array está completamente ordenado.",
     callStack: [],
     metrics: { comparisons, swaps, memoryAccesses, estimatedComplexity: "O(n²)" },
+    codeLine: 7,
   };
 }

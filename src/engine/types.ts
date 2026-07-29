@@ -14,4 +14,5 @@ export interface Frame {
   narrative: string;
   callStack: string[];
   metrics: FrameMetrics;
+  codeLine: number;
 }

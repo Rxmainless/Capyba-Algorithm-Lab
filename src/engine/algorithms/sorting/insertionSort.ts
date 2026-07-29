@@ -21,6 +21,7 @@ export function* insertionSort(input: number[]): Generator<Frame> {
         narrative: `Comparando o elemento na posição ${j} com o anterior (posição ${j - 1}) para encontrar a posição correta de inserção.`,
         callStack: [`insertionSort(i=${i})`],
         metrics: { comparisons, swaps, memoryAccesses, estimatedComplexity: "O(n²)" },
+        codeLine: 3,
       };
 
       if (array[j - 1] <= array[j]) break;
@@ -36,6 +37,7 @@ export function* insertionSort(input: number[]): Generator<Frame> {
         narrative: `Elemento fora de posição. Movendo-o uma posição para trás na sequência já ordenada.`,
         callStack: [`insertionSort(i=${i})`],
         metrics: { comparisons, swaps, memoryAccesses, estimatedComplexity: "O(n²)" },
+        codeLine: 4,
       };
 
       j--;
@@ -49,5 +51,6 @@ export function* insertionSort(input: number[]): Generator<Frame> {
     narrative: "O array está completamente ordenado.",
     callStack: [],
     metrics: { comparisons, swaps, memoryAccesses, estimatedComplexity: "O(n²)" },
+    codeLine: 6,
   };
 }
