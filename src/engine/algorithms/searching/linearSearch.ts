@@ -8,13 +8,16 @@ export function* linearSearch(input: number[], target: number): Generator<Frame>
   for (let i = 0; i < array.length; i++) {
     comparisons++;
     memoryAccesses++;
+    const remaining = array.length - i - 1;
+    const eliminated = Array.from({ length: i }, (_, k) => k);
 
     if (array[i] === target) {
       yield {
         array: [...array],
         highlightedIndices: [i],
-        action: "swap",
-        narrative: `Elemento encontrado na posição ${i}! O valor ${target} corresponde ao alvo da busca.`,
+        eliminatedIndices: eliminated,
+        action: "found",
+        narrative: `Encontrado! A posição ${i} guarda o valor ${target}, após ${comparisons} comparação${comparisons > 1 ? "ões" : ""}.`,
         callStack: [`linearSearch(target=${target})`],
         metrics: { comparisons, swaps: 0, memoryAccesses, estimatedComplexity: "O(n)" },
         codeLine: 4,
@@ -25,8 +28,12 @@ export function* linearSearch(input: number[], target: number): Generator<Frame>
     yield {
       array: [...array],
       highlightedIndices: [i],
-      action: "compare",
-      narrative: `Verificando a posição ${i} (valor ${array[i]}): ainda não é o valor procurado (${target}).`,
+      eliminatedIndices: eliminated,
+      action: "probe",
+      narrative:
+        remaining > 0
+          ? `Posição ${i} (valor ${array[i]}) não é ${target}. Restam ${remaining} posição${remaining > 1 ? "ões" : ""} para verificar.`
+          : `Posição ${i} (valor ${array[i]}) não é ${target}. Essa era a última posição do array.`,
       callStack: [`linearSearch(target=${target})`],
       metrics: { comparisons, swaps: 0, memoryAccesses, estimatedComplexity: "O(n)" },
       codeLine: 3,
@@ -36,8 +43,9 @@ export function* linearSearch(input: number[], target: number): Generator<Frame>
   yield {
     array: [...array],
     highlightedIndices: [],
+    eliminatedIndices: Array.from({ length: array.length }, (_, k) => k),
     action: "compare",
-    narrative: `Busca concluída: o valor ${target} não está presente no array.`,
+    narrative: `Todas as ${array.length} posições foram verificadas: ${target} não está presente no array.`,
     callStack: [],
     metrics: { comparisons, swaps: 0, memoryAccesses, estimatedComplexity: "O(n)" },
     codeLine: 5,

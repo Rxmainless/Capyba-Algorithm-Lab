@@ -11,7 +11,7 @@ describe.each(algorithms)("$name", ({ run }) => {
   it("encontra um valor presente no array", () => {
     const frames = [...run([5, 2, 9, 1, 7], 9)];
     const lastFrame = frames[frames.length - 1];
-    expect(lastFrame.action).toBe("swap");
+    expect(lastFrame.action).toBe("found");
     expect(lastFrame.highlightedIndices.length).toBe(1);
   });
 

@@ -1,4 +1,4 @@
-export type FrameAction = "compare" | "swap" | "call" | "return" | "idle";
+export type FrameAction = "compare" | "swap" | "call" | "return" | "idle" | "probe" | "found";
 
 export interface FrameMetrics {
   comparisons: number;
@@ -15,4 +15,5 @@ export interface Frame {
   callStack: string[];
   metrics: FrameMetrics;
   codeLine: number;
+  eliminatedIndices?: number[];
 }
