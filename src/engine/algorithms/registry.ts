@@ -8,23 +8,26 @@ import { heapSort } from "./sorting/heapSort";
 import { linearSearch } from "./searching/linearSearch";
 import { binarySearch } from "./searching/binarySearch";
 
+export type Difficulty = "beginner" | "intermediate" | "advanced";
+
 export interface AlgorithmDefinition {
   id: string;
   name: string;
   category: string;
+  difficulty: Difficulty;
   requiresTarget?: boolean;
   run: (input: number[], target: number) => Generator<Frame>;
 }
 
 export const algorithms: AlgorithmDefinition[] = [
-  { id: "bubble-sort", name: "Bubble Sort", category: "Ordenação", run: bubbleSort },
-  { id: "selection-sort", name: "Selection Sort", category: "Ordenação", run: selectionSort },
-  { id: "insertion-sort", name: "Insertion Sort", category: "Ordenação", run: insertionSort },
-  { id: "quick-sort", name: "Quick Sort", category: "Ordenação", run: quickSort },
-  { id: "merge-sort", name: "Merge Sort", category: "Ordenação", run: mergeSort },
-  { id: "heap-sort", name: "Heap Sort", category: "Ordenação", run: heapSort },
-  { id: "linear-search", name: "Linear Search", category: "Busca", requiresTarget: true, run: linearSearch },
-  { id: "binary-search", name: "Binary Search", category: "Busca", requiresTarget: true, run: binarySearch },
+  { id: "linear-search", name: "Linear Search", category: "Busca", difficulty: "beginner", requiresTarget: true, run: linearSearch },
+  { id: "bubble-sort", name: "Bubble Sort", category: "Ordenação", difficulty: "beginner", run: bubbleSort },
+  { id: "selection-sort", name: "Selection Sort", category: "Ordenação", difficulty: "beginner", run: selectionSort },
+  { id: "insertion-sort", name: "Insertion Sort", category: "Ordenação", difficulty: "intermediate", run: insertionSort },
+  { id: "binary-search", name: "Binary Search", category: "Busca", difficulty: "intermediate", requiresTarget: true, run: binarySearch },
+  { id: "quick-sort", name: "Quick Sort", category: "Ordenação", difficulty: "advanced", run: quickSort },
+  { id: "merge-sort", name: "Merge Sort", category: "Ordenação", difficulty: "advanced", run: mergeSort },
+  { id: "heap-sort", name: "Heap Sort", category: "Ordenação", difficulty: "advanced", run: heapSort },
 ];
 
 export function getAlgorithmById(id: string): AlgorithmDefinition {
