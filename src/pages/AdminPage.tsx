@@ -1,0 +1,31 @@
+import { algorithms } from "../engine/algorithms/registry";
+
+export function AdminPage() {
+  const byCategory = algorithms.reduce<Record<string, number>>((acc, algo) => {
+    acc[algo.category] = (acc[algo.category] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  return (
+    <div className="min-h-screen bg-bg text-white flex flex-col p-4 md:p-6 gap-4">
+      <h1 className="font-mono text-lg text-accent-amber">Lumen — Admin</h1>
+      <p className="font-mono text-xs text-text-secondary">
+        Esta rota é protegida pelo Cloudflare Access. Se você está vendo isso, a proteção está ativa.
+      </p>
+
+      <div className="bg-panel rounded-lg p-4 max-w-sm">
+        <h3 className="font-mono text-xs text-text-secondary uppercase tracking-wide mb-2">
+          Algoritmos por categoria
+        </h3>
+        <dl className="grid grid-cols-2 gap-y-1 font-mono text-sm">
+          {Object.entries(byCategory).map(([category, count]) => (
+            <div key={category} className="contents">
+              <dt className="text-text-secondary">{category}</dt>
+              <dd className="text-right text-accent-cyan">{count}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  );
+}
