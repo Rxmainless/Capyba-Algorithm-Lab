@@ -14,8 +14,19 @@ interface PlaybackControlsProps {
 }
 
 export function PlaybackControls({ onPlay }: PlaybackControlsProps) {
-  const { isPlaying, pause, next, prev, reset, speed, setSpeed, currentIndex, frames, muted, toggleMute } =
-    useExecutionStore();
+  const {
+    isPlaying,
+    pause,
+    next,
+    prev,
+    reset,
+    speed,
+    setSpeed,
+    currentIndex,
+    frames,
+    muted,
+    toggleMute,
+  } = useExecutionStore();
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -25,16 +36,44 @@ export function PlaybackControls({ onPlay }: PlaybackControlsProps) {
 
   return (
     <div className="flex items-center gap-3 bg-panel rounded-lg p-3 font-mono text-sm">
-      <button onClick={reset} className="text-text-secondary hover:text-white">⏮</button>
-      <button onClick={prev} className="text-text-secondary hover:text-white">◀</button>
-      <button onClick={isPlaying ? pause : onPlay} className="text-accent-amber hover:text-white text-lg">
+      <button
+        onClick={reset}
+        aria-label="Voltar ao início"
+        className="text-text-secondary hover:text-white"
+      >
+        ⏮
+      </button>
+      <button
+        onClick={prev}
+        aria-label="Frame anterior"
+        className="text-text-secondary hover:text-white"
+      >
+        ◀
+      </button>
+      <button
+        onClick={isPlaying ? pause : onPlay}
+        aria-label={isPlaying ? "Pausar" : "Reproduzir"}
+        className="text-accent-amber hover:text-white text-lg"
+      >
         {isPlaying ? "⏸" : "▶"}
       </button>
-      <button onClick={next} className="text-text-secondary hover:text-white">▶|</button>
-      <button onClick={toggleMute} className="text-text-secondary hover:text-white">
+      <button
+        onClick={next}
+        aria-label="Próximo frame"
+        className="text-text-secondary hover:text-white"
+      >
+        ▶|
+      </button>
+      <button
+        onClick={toggleMute}
+        aria-label={muted ? "Ativar som" : "Silenciar"}
+        className="text-text-secondary hover:text-white"
+      >
         {muted ? "🔇" : "🔊"}
       </button>
-      <span className="text-text-secondary ml-2">{currentIndex + 1} / {frames.length}</span>
+      <span className="text-text-secondary ml-2">
+        {currentIndex + 1} / {frames.length}
+      </span>
 
       <select
         value={speed}

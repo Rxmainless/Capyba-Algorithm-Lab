@@ -10,7 +10,7 @@ export function AdminPage() {
     <div className="min-h-screen bg-bg text-white flex flex-col p-4 md:p-6 gap-4">
       <h1 className="font-mono text-lg text-accent-amber">Lumen — Admin</h1>
       <p className="font-mono text-xs text-text-secondary">
-        Esta rota é protegida pelo Cloudflare Access. Se você está vendo isso, a proteção está ativa.
+        ⚠️ Rota ainda sem proteção de acesso configurada. Não publicar em produção até o Cloudflare Access (ou equivalente) estar ativo.
       </p>
 
       <div className="bg-panel rounded-lg p-4 max-w-sm">
