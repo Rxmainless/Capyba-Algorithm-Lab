@@ -3,6 +3,7 @@ import { toBlobURL, fetchFile } from "@ffmpeg/util";
 import coreURL from "@ffmpeg/core?url";
 import wasmURL from "@ffmpeg/core/wasm?url";
 import type { AlgorithmDefinition } from "../engine/algorithms/registry";
+import type { Frame } from "../engine/types";
 import { soundMap } from "../engine/audio";
 import {
   createRecordingCanvas,
@@ -10,6 +11,7 @@ import {
   drawInterpolatedFrame,
   drawOutro,
   easeOutCubic,
+  ensureFontsLoaded,
   type OutroMode,
 } from "../engine/videoRenderer";
 
@@ -42,24 +44,24 @@ function getSupportedMimeType(): string {
 function scheduleFrameSounds(
   audioCtx: AudioContext,
   destination: MediaStreamAudioDestinationNode,
-  frameCount: number,
+  frames: Frame[],
   msPerFrame: number,
   offsetMs: number
 ) {
-  const { freq, duration, type } = soundMap.compare;
-  for (let i = 0; i < frameCount; i++) {
+  frames.forEach((frame, i) => {
+    const { freq, duration, type } = soundMap[frame.action];
     const startTime = audioCtx.currentTime + (offsetMs + i * msPerFrame) / 1000;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = type;
     osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.12, startTime);
+    gain.gain.setValueAtTime(0.1, startTime);
     gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
     osc.connect(gain);
     gain.connect(destination);
     osc.start(startTime);
     osc.stop(startTime + duration);
-  }
+  });
 }
 
 function scheduleOutroChime(
@@ -130,12 +132,14 @@ export async function recordClip({
       : "not-found";
 
   const canvas = createRecordingCanvas();
+  await ensureFontsLoaded();
+
   const videoStream = canvas.captureStream(30);
 
   const audioCtx = new AudioContext();
   await audioCtx.resume();
   const audioDestination = audioCtx.createMediaStreamDestination();
-  scheduleFrameSounds(audioCtx, audioDestination, frames.length, msPerFrame, INTRO_MS);
+  scheduleFrameSounds(audioCtx, audioDestination, frames, msPerFrame, INTRO_MS);
   scheduleOutroChime(audioCtx, audioDestination, lastFrame.array.length, INTRO_MS + mainMs, outroMode);
 
   const combinedStream = new MediaStream([
@@ -208,6 +212,7 @@ export async function recordClip({
   await ffmpeg.exec([
     "-i", inputName,
     "-c:v", "libx264",
+    "-crf", "18",
     "-pix_fmt", "yuv420p",
     "-c:a", "aac",
     "-b:a", "128k",
