@@ -7,7 +7,7 @@ function getContext() {
   return ctx;
 }
 
-const soundMap: Record<FrameAction, { freq: number; duration: number; type: OscillatorType }> = {
+export const soundMap: Record<FrameAction, { freq: number; duration: number; type: OscillatorType }> = {
   compare: { freq: 440, duration: 0.05, type: "sine" },
   swap: { freq: 660, duration: 0.08, type: "triangle" },
   call: { freq: 220, duration: 0.06, type: "square" },
