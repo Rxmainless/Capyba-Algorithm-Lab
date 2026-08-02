@@ -1,18 +1,12 @@
 import { useState } from "react";
 import { algorithms } from "../../engine/algorithms/registry";
 import { recordClip } from "../../lib/recordClip";
-
-const DURATION_OPTIONS = [
-  { label: "15s", value: 15 },
-  { label: "30s", value: 30 },
-  { label: "60s", value: 60 },
-];
+import { getRecommendedDuration } from "../../lib/videoDurations";
 
 const categories = [...new Set(algorithms.map((a) => a.category))];
 
 export function VideoComposer() {
   const [algorithmId, setAlgorithmId] = useState(algorithms[0].id);
-  const [duration, setDuration] = useState(15);
   const [status, setStatus] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -25,7 +19,6 @@ export function VideoComposer() {
     try {
       const blob = await recordClip({
         algorithm,
-        durationSeconds: duration,
         tiktokHandle: "@notfoundbyte",
         onProgress: setStatus,
       });
@@ -67,18 +60,9 @@ export function VideoComposer() {
         ))}
       </select>
 
-      <select
-        value={duration}
-        onChange={(e) => setDuration(Number(e.target.value))}
-        className="bg-bg text-white rounded px-3 py-1.5 border border-text-secondary/30 font-mono text-sm"
-        disabled={isRecording}
-      >
-        {DURATION_OPTIONS.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+      <p className="font-mono text-xs text-text-secondary">
+        Duração pré-definida: <span className="text-accent-cyan">{getRecommendedDuration(algorithmId)}s</span> (calibrada para este algoritmo)
+      </p>
 
       <button
         onClick={handleRecord}

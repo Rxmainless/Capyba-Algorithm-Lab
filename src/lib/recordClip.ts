@@ -14,11 +14,25 @@ import {
   ensureFontsLoaded,
   type OutroMode,
 } from "../engine/videoRenderer";
+import { getRecommendedDuration, getRecordingArraySize } from "./videoDurations";
 
 const INTRO_MS = 1200;
 const OUTRO_MS = 1800;
 
-function randomArray(size = 10) {
+let cachedFFmpeg: FFmpeg | null = null;
+
+async function getFFmpeg(): Promise<FFmpeg> {
+  if (cachedFFmpeg) return cachedFFmpeg;
+  const ffmpeg = new FFmpeg();
+  await ffmpeg.load({
+    coreURL: await toBlobURL(coreURL, "text/javascript"),
+    wasmURL: await toBlobURL(wasmURL, "application/wasm"),
+  });
+  cachedFFmpeg = ffmpeg;
+  return ffmpeg;
+}
+
+function randomArray(size: number) {
   return Array.from({ length: size }, () => Math.floor(Math.random() * 90) + 10);
 }
 
@@ -103,19 +117,15 @@ function scheduleOutroChime(
 
 interface RecordClipOptions {
   algorithm: AlgorithmDefinition;
-  durationSeconds: number;
   tiktokHandle: string;
   onProgress: (message: string) => void;
 }
 
-export async function recordClip({
-  algorithm,
-  durationSeconds,
-  tiktokHandle,
-  onProgress,
-}: RecordClipOptions): Promise<Blob> {
+export async function recordClip({ algorithm, tiktokHandle, onProgress }: RecordClipOptions): Promise<Blob> {
   onProgress("Gerando execução do algoritmo...");
-  const input = randomArray();
+  const arraySize = getRecordingArraySize(algorithm.id);
+  const durationSeconds = getRecommendedDuration(algorithm.id);
+  const input = randomArray(arraySize);
   const target = algorithm.requiresTarget ? pickTarget(input) : 0;
   const frames = [...algorithm.run(input, target)];
 
@@ -158,7 +168,7 @@ export async function recordClip({
     recorder.onstop = () => resolve(new Blob(chunks, { type: mimeType.split(";")[0] }));
   });
 
-  onProgress("Gravando animação e áudio...");
+  onProgress(`Gravando ${algorithm.name} (${durationSeconds}s)...`);
   recorder.start();
 
   const complexity = frames[0]?.metrics.estimatedComplexity ?? "";
@@ -200,11 +210,7 @@ export async function recordClip({
   audioCtx.close();
 
   onProgress("Carregando conversor de vídeo...");
-  const ffmpeg = new FFmpeg();
-  await ffmpeg.load({
-    coreURL: await toBlobURL(coreURL, "text/javascript"),
-    wasmURL: await toBlobURL(wasmURL, "application/wasm"),
-  });
+  const ffmpeg = await getFFmpeg();
 
   onProgress("Convertendo para MP4...");
   const inputName = `input.${fileExt}`;
@@ -212,7 +218,8 @@ export async function recordClip({
   await ffmpeg.exec([
     "-i", inputName,
     "-c:v", "libx264",
-    "-crf", "18",
+    "-preset", "veryfast",
+    "-crf", "20",
     "-pix_fmt", "yuv420p",
     "-c:a", "aac",
     "-b:a", "128k",
