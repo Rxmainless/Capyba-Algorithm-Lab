@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { algorithms } from "../../engine/algorithms/registry";
 import { recordClip } from "../../lib/recordClip";
+<<<<<<< HEAD
 import { recordRaceClip } from "../../lib/recordRaceClip";
+=======
+>>>>>>> 4467ddcbc3b54fb327758fd5071330db1ce289ec
 import { getRecommendedDuration } from "../../lib/videoDurations";
 
 const categories = [...new Set(algorithms.map((a) => a.category))];
@@ -85,9 +88,15 @@ export function VideoComposer() {
           ))}
         </select>
 
+<<<<<<< HEAD
         <p className="font-mono text-xs text-text-secondary">
           Duração: <span className="text-accent-cyan">{getRecommendedDuration(algorithmId)}s</span>
         </p>
+=======
+      <p className="font-mono text-xs text-text-secondary">
+        Duração pré-definida: <span className="text-accent-cyan">{getRecommendedDuration(algorithmId)}s</span> (calibrada para este algoritmo)
+      </p>
+>>>>>>> 4467ddcbc3b54fb327758fd5071330db1ce289ec
 
         <button
           onClick={handleRecordSingle}
