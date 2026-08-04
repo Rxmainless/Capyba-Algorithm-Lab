@@ -5,6 +5,8 @@ const DURATIONS: Record<string, number> = {
   "quick-sort": 24,
   "merge-sort": 24,
   "heap-sort": 22,
+  "counting-sort": 16,
+  "radix-sort": 20,
   "linear-search": 14,
   "binary-search": 12,
 };

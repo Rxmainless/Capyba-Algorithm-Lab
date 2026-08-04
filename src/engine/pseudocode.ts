@@ -82,4 +82,26 @@ export const pseudocode: Record<string, string[]> = {
     "      high = mid - 1",
     "  return not found",
   ],
+  
+"counting-sort": [
+    "countingSort(array):",
+    "  for value in array: count[value]++",
+    "  for i from 1 to max: count[i] += count[i-1]",
+    "  for value in reverse(array):",
+    "    count[value] -= 1",
+    "    output[count[value]] = value",
+    "  return output",
+  ],
+  "radix-sort": [
+    "radixSort(array):",
+    "  for exp = 1; max/exp > 0; exp *= 10",
+    "    countingSortByDigit(array, exp)",
+    "  return array",
+    "",
+    "countingSortByDigit(array, exp):",
+    "  for value in array: count[digit(value,exp)]++",
+    "  for value in reverse(array):",
+    "    output[--count[digit]] = value",
+    "  array = output",
+  ],
 };
