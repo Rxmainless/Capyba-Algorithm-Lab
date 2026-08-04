@@ -1,7 +1,4 @@
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { toBlobURL, fetchFile } from "@ffmpeg/util";
-import coreURL from "@ffmpeg/core?url";
-import wasmURL from "@ffmpeg/core/wasm?url";
+import { fetchFile } from "@ffmpeg/util";
 import type { AlgorithmDefinition } from "../engine/algorithms/registry";
 import type { Frame } from "../engine/types";
 import { soundMap } from "../engine/audio";
@@ -15,22 +12,10 @@ import {
   type OutroMode,
 } from "../engine/videoRenderer";
 import { getRecommendedDuration, getRecordingArraySize } from "./videoDurations";
+import { getFFmpeg } from "./ffmpegInstance";
 
 const INTRO_MS = 1200;
 const OUTRO_MS = 1800;
-
-let cachedFFmpeg: FFmpeg | null = null;
-
-async function getFFmpeg(): Promise<FFmpeg> {
-  if (cachedFFmpeg) return cachedFFmpeg;
-  const ffmpeg = new FFmpeg();
-  await ffmpeg.load({
-    coreURL: await toBlobURL(coreURL, "text/javascript"),
-    wasmURL: await toBlobURL(wasmURL, "application/wasm"),
-  });
-  cachedFFmpeg = ffmpeg;
-  return ffmpeg;
-}
 
 function randomArray(size: number) {
   return Array.from({ length: size }, () => Math.floor(Math.random() * 90) + 10);
