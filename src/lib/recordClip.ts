@@ -12,30 +12,11 @@ import {
   type OutroMode,
 } from "../engine/videoRenderer";
 import { getRecommendedDuration, getRecordingArraySize } from "./videoDurations";
-<<<<<<< HEAD
 import { getFFmpeg } from "./ffmpegInstance";
-=======
->>>>>>> 4467ddcbc3b54fb327758fd5071330db1ce289ec
 
 const INTRO_MS = 1200;
 const OUTRO_MS = 1800;
 
-<<<<<<< HEAD
-=======
-let cachedFFmpeg: FFmpeg | null = null;
-
-async function getFFmpeg(): Promise<FFmpeg> {
-  if (cachedFFmpeg) return cachedFFmpeg;
-  const ffmpeg = new FFmpeg();
-  await ffmpeg.load({
-    coreURL: await toBlobURL(coreURL, "text/javascript"),
-    wasmURL: await toBlobURL(wasmURL, "application/wasm"),
-  });
-  cachedFFmpeg = ffmpeg;
-  return ffmpeg;
-}
-
->>>>>>> 4467ddcbc3b54fb327758fd5071330db1ce289ec
 function randomArray(size: number) {
   return Array.from({ length: size }, () => Math.floor(Math.random() * 90) + 10);
 }
