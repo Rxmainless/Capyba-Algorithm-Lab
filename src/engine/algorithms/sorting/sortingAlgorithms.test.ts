@@ -3,12 +3,16 @@ import { insertionSort } from "./insertionSort";
 import { selectionSort } from "./selectionSort";
 import { mergeSort } from "./mergeSort";
 import { heapSort } from "./heapSort";
+import { countingSort } from "./countingSort";
+import { radixSort } from "./radixSort";
 
 const algorithms = [
   { name: "insertionSort", run: insertionSort },
   { name: "selectionSort", run: selectionSort },
   { name: "mergeSort", run: mergeSort },
   { name: "heapSort", run: heapSort },
+  { name: "countingSort", run: countingSort },
+  { name: "radixSort", run: radixSort },
 ];
 
 describe.each(algorithms)("$name", ({ run }) => {

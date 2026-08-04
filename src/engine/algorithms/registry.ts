@@ -5,6 +5,8 @@ import { insertionSort } from "./sorting/insertionSort";
 import { selectionSort } from "./sorting/selectionSort";
 import { mergeSort } from "./sorting/mergeSort";
 import { heapSort } from "./sorting/heapSort";
+import { countingSort } from "./sorting/countingSort";
+import { radixSort } from "./sorting/radixSort";
 import { linearSearch } from "./searching/linearSearch";
 import { binarySearch } from "./searching/binarySearch";
 
@@ -28,6 +30,8 @@ export const algorithms: AlgorithmDefinition[] = [
   { id: "quick-sort", name: "Quick Sort", category: "Ordenação", difficulty: "advanced", run: quickSort },
   { id: "merge-sort", name: "Merge Sort", category: "Ordenação", difficulty: "advanced", run: mergeSort },
   { id: "heap-sort", name: "Heap Sort", category: "Ordenação", difficulty: "advanced", run: heapSort },
+  { id: "counting-sort", name: "Counting Sort", category: "Ordenação", difficulty: "advanced", run: countingSort },
+  { id: "radix-sort", name: "Radix Sort", category: "Ordenação", difficulty: "advanced", run: radixSort },
 ];
 
 export function getAlgorithmById(id: string): AlgorithmDefinition {
