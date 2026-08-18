@@ -82,8 +82,8 @@ export const pseudocode: Record<string, string[]> = {
     "      high = mid - 1",
     "  return not found",
   ],
-  
-"counting-sort": [
+
+  "counting-sort": [
     "countingSort(array):",
     "  for value in array: count[value]++",
     "  for i from 1 to max: count[i] += count[i-1]",
